@@ -30,6 +30,7 @@ public class TravelerController {
             Traveler foundTraveler = travelerService.findTravelerById(id);
 
             TrainDTO foundTrain = trainFeignClient.getTrainById(foundTraveler.getTrainId());
+            System.out.println(foundTraveler);
             System.out.println(foundTrain);
 
             Map<String, Object> response = new HashMap<>();
