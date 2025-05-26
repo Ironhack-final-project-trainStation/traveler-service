@@ -3,10 +3,7 @@ package traveler_service.traveler_service.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import traveler_service.traveler_service.dtos.TrainDTO;
 import traveler_service.traveler_service.exceptions.TravelerNotFoundException;
 import traveler_service.traveler_service.feignclients.TrainFeignClient;
@@ -42,6 +39,31 @@ public class TravelerController {
             return  new ResponseEntity<>(response, HttpStatus.OK);
         } catch (TravelerNotFoundException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @PostMapping
+    public ResponseEntity<Traveler> createTraveler (@RequestBody Traveler traveler) {
+        Traveler newTraveler = travelerService.saveTraveler(traveler);
+        return new ResponseEntity<>(newTraveler, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTraveler(@PathVariable Long id, @RequestBody Traveler Traveler) {
+        try {
+            Traveler updatedTraveler = travelerService.updateTraveler(id, Traveler);
+            return new ResponseEntity<>(updatedTraveler, HttpStatus.OK);
+        } catch (TravelerNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTraveler (@PathVariable Long id) {
+        try {
+            travelerService.deleteTraveler(id);
+            return new ResponseEntity<>("Traveler deleted succesfully", HttpStatus.OK);
+        } catch (TravelerNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -23,4 +23,22 @@ public class TravelerService {
             throw new TravelerNotFoundException("Traveler not found");
         }
     }
+
+    public Traveler saveTraveler(Traveler traveler) {
+        return travelerRepository.save(traveler);
+    }
+
+    public Traveler updateTraveler(Long id, Traveler updated) {
+        Traveler traveler = findTravelerById(id);
+        traveler.setName(updated.getName());
+        traveler.setAge(updated.getAge());
+        traveler.setEmail(updated.getEmail());
+        traveler.setTrainId(updated.getTrainId());
+        return travelerRepository.save(traveler);
+    }
+
+    public void deleteTraveler (Long id) {
+        Traveler traveler = findTravelerById(id);
+        travelerRepository.delete(traveler);
+    }
 }
