@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import traveler_service.traveler_service.dtos.TrainDTO;
+import traveler_service.traveler_service.dtos.TravelersNameDTO;
 import traveler_service.traveler_service.exceptions.TravelerNotFoundException;
 import traveler_service.traveler_service.feignclients.TrainFeignClient;
 import traveler_service.traveler_service.models.Traveler;
@@ -24,7 +25,7 @@ public class TravelerController {
     @Autowired
     TrainFeignClient trainFeignClient;
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> getTravelerById(@PathVariable Long id) {
 
         try {
@@ -44,9 +45,14 @@ public class TravelerController {
         }
     }
 
-    @GetMapping("/train/{id}")
-    public ResponseEntity<List<Traveler>> getTravelersByTrain(@PathVariable String trainId){
-        List <Traveler> travelers = travelerService.findByTrainId(trainId);
+    @GetMapping("/train/{trainId}")
+    public ResponseEntity<List<TravelersNameDTO>> getTravelersByTrain(@PathVariable("trainId") String trainId){
+        List <TravelersNameDTO> travelers = travelerService.findByTrainId(trainId);
+
+        if(travelers.isEmpty()) {
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(travelers, HttpStatus.OK);
     }
 
