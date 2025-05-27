@@ -11,6 +11,7 @@ import traveler_service.traveler_service.models.Traveler;
 import traveler_service.traveler_service.services.TravelerService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -44,24 +45,12 @@ public class TravelerController {
     }
 
     @GetMapping("/train/{id}")
-    public ResponseEntity<?> getTravelerByTrainId(@PathVariable String trainId) {
-
-        try {
-            Traveler foundTraveler = travelerService.findByTrainId(trainId);
-
-            TrainDTO foundTrain = trainFeignClient.getTrainById(trainId);
-            System.out.println(foundTraveler);
-            System.out.println(foundTrain);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("Traveler", foundTraveler);
-            response.put("Train", foundTrain);
-
-            return  new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (TravelerNotFoundException exception) {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<List<Traveler>> getTravelersByTrain(@PathVariable String trainId){
+        List <Traveler> travelers = travelerService.findByTrainId(trainId);
+        return new ResponseEntity<>(travelers, HttpStatus.OK);
     }
+
+
     @PostMapping
     public ResponseEntity<Traveler> createTraveler (@RequestBody Traveler traveler) {
         Traveler newTraveler = travelerService.saveTraveler(traveler);

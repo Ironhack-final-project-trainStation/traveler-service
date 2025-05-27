@@ -6,6 +6,7 @@ import traveler_service.traveler_service.exceptions.TravelerNotFoundException;
 import traveler_service.traveler_service.models.Traveler;
 import traveler_service.traveler_service.repositories.TravelerRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,10 +25,8 @@ public class TravelerService {
         }
     }
 
-    public Traveler findByTrainId(String trainID) throws TravelerNotFoundException{
-        return travelerRepository.findByTrainId(trainID)
-                .orElseThrow(() -> new TravelerNotFoundException("Traveler not found for train: " + trainID));
-
+    public List<Traveler> findByTrainId(String trainId) {
+        return travelerRepository.findByTrainId(trainId);
     }
 
     public Traveler saveTraveler(Traveler traveler) {
