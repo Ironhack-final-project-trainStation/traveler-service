@@ -24,6 +24,12 @@ public class TravelerService {
         }
     }
 
+    public Traveler findByTrainId(String trainID) throws TravelerNotFoundException{
+        return travelerRepository.findByTrainId(trainID)
+                .orElseThrow(() -> new TravelerNotFoundException("Traveler not found for train: " + trainID));
+
+    }
+
     public Traveler saveTraveler(Traveler traveler) {
         return travelerRepository.save(traveler);
     }

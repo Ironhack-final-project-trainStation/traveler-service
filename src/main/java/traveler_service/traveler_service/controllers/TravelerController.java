@@ -42,6 +42,26 @@ public class TravelerController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/train/{id}")
+    public ResponseEntity<?> getTravelerByTrainId(@PathVariable String trainId) {
+
+        try {
+            Traveler foundTraveler = travelerService.findByTrainId(trainId);
+
+            TrainDTO foundTrain = trainFeignClient.getTrainById(trainId);
+            System.out.println(foundTraveler);
+            System.out.println(foundTrain);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("Traveler", foundTraveler);
+            response.put("Train", foundTrain);
+
+            return  new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (TravelerNotFoundException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
     @PostMapping
     public ResponseEntity<Traveler> createTraveler (@RequestBody Traveler traveler) {
         Traveler newTraveler = travelerService.saveTraveler(traveler);

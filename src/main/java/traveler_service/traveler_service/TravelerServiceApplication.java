@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "traveler_service.traveler_service.feignclients")
-//@EnableEurekaClient
+
 public class TravelerServiceApplication {
 
 	public static void main(String[] args) {
