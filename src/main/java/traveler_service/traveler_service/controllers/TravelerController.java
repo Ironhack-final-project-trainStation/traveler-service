@@ -1,8 +1,10 @@
 package traveler_service.traveler_service.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import traveler_service.traveler_service.dtos.TrainDTO;
 import traveler_service.traveler_service.dtos.TravelersNameDTO;
@@ -10,11 +12,14 @@ import traveler_service.traveler_service.exceptions.TravelerNotFoundException;
 import traveler_service.traveler_service.feignclients.TrainFeignClient;
 import traveler_service.traveler_service.models.Traveler;
 import traveler_service.traveler_service.services.TravelerService;
+import org.springframework.validation.BindingResult;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping("/api/traveler")
 public class TravelerController {
@@ -58,13 +63,13 @@ public class TravelerController {
 
 
     @PostMapping
-    public ResponseEntity<Traveler> createTraveler (@RequestBody Traveler traveler) {
+    public ResponseEntity<Traveler> createTraveler (@RequestBody @Valid Traveler traveler) {
         Traveler newTraveler = travelerService.saveTraveler(traveler);
         return new ResponseEntity<>(newTraveler, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTraveler(@PathVariable Long id, @RequestBody Traveler Traveler) {
+    public ResponseEntity<?> updateTraveler(@PathVariable Long id, @RequestBody @Valid Traveler Traveler) {
         try {
             Traveler updatedTraveler = travelerService.updateTraveler(id, Traveler);
             return new ResponseEntity<>(updatedTraveler, HttpStatus.OK);
