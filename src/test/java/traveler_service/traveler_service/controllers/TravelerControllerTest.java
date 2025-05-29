@@ -123,6 +123,6 @@ public class TravelerControllerTest {
         Mockito.doNothing().when(travelerService).deleteTraveler(6L);
         mockMvc.perform(delete("/api/traveler/6"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Traveler deleted succesfully"));
+                .andExpect(content().string("Traveler deleted successfully"));
     }
 }
